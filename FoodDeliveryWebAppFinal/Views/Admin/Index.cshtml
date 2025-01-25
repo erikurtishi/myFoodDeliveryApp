@@ -1,0 +1,118 @@
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<FoodDeliveryWebAppFinal.Models.AppUser>
+@inject UserManager<FoodDeliveryWebAppFinal.Models.AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+
+    // Fetch the current user's full name
+    var currentUser = await UserManager.GetUserAsync(User);
+    string fullName = currentUser?.FullName ?? "Admin";
+}
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #ff9800; font-weight: 600;">Welcome, @fullName!</h2>
+            <div>
+                <a asp-action="CreateDriver" asp-controller="Admin" class="btn btn-sm" style="
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            margin-right: 10px; 
+        ">
+                    <i class="fas fa-user-plus"></i> Create Driver
+                </a>
+                <a asp-action="CreateRestaurant" asp-controller="Admin" class="btn btn-sm" style="
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 16px;
+            font-weight: 500;
+            border-radius: 5px;
+        ">
+                    <i class="fas fa-user-plus"></i> Create Restaurant
+                </a>
+            </div>
+        </div>
+
+        <!-- User Table -->
+        <table class="table table-striped" style="
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead style="background-color: #ff9800; color: white;">
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.Address</td>
+                    <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
+                    <td>
+                        <!-- Delete Button -->
+                        <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm" style="
+                                    background-color: #dc3545;
+                                    color: white;
+                                    border: none;
+                                    padding: 5px 10px;
+                                    font-weight: 500;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                ">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add any custom styles -->
+<style>
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+
+    .btn-success, .btn-danger {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+</style>

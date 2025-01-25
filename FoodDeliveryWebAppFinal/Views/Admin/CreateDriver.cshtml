@@ -1,0 +1,142 @@
+@model FoodDeliveryWebAppFinal.Models.CreateDriverViewModel
+
+<style>
+    
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 700px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #ff9800;
+        border-color: #ff9800;
+    }
+
+    .btn-primary:hover {
+        background-color: #e68900;
+        border-color: #e68900;
+    }
+
+    .form-control {
+        background-color: #fff6e9;
+        border: 1px solid #ff9800;
+        color: #333;
+        border-radius: 8px;
+        padding: 10px;
+        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #ff9800;
+        box-shadow: 0 0 0 0.2rem rgba(255, 152, 0, 0.25);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .auth-footer a {
+        color: #ff9800;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+<body>
+<div class="auth-card">
+    <h2>Create Driver</h2>
+    <form asp-action="CreateDriver" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input id="phoneNumber" asp-for="PhoneNumber" class="form-control" />
+                <input type="hidden" id="fullPhoneNumber" name="PhoneNumber" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="VehicleType" class="form-label"></label>
+                <input asp-for="VehicleType" class="form-control" />
+                <span asp-validation-for="VehicleType" class="text-danger"></span>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label asp-for="LicenseNumber" class="form-label"></label>
+                <input asp-for="LicenseNumber" class="form-control" />
+                <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Create Driver</button>
+    </form>
+    <div class="auth-footer">
+        <a asp-action="Index" asp-controller="Admin">Back to Home</a>
+    </div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var input = document.querySelector("#phoneNumber");
+        var hiddenInput = document.querySelector("#fullPhoneNumber");
+
+        var iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch('https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN')
+                    .then(response => response.json())
+                    .then(data => callback(data.country))
+                    .catch(() => callback('US'));
+            },
+            preferredCountries: ['mk', 'us', 'gb', 'fr', 'it'],
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+        });
+
+        input.addEventListener("blur", function () {
+            hiddenInput.value = iti.getNumber();
+        });
+    });
+</script>
+
