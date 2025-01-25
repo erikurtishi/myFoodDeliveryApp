@@ -10,8 +10,9 @@ public class Driver
     public string VehicleType { get; set; } 
     public string LicenseNumber { get; set; }
     [Required]
-    public string UserId { get; set; }
+    public string UserID { get; set; }
     [ForeignKey("UserID")]
+    
     public AppUser User { get; set; }
 
     // public ICollection<Order> Orders { get; set; } = new List<Order>();

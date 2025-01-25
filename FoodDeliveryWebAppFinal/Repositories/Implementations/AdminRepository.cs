@@ -43,7 +43,7 @@ public class AdminRepository : IAdminRepository
 
                 var driver = new Driver
                 {
-                    UserId = user.Id,
+                    UserID = user.Id,
                     VehicleType = model.VehicleType,
                     LicenseNumber = model.LicenseNumber
                 };
