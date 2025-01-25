@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FoodDeliveryWebAppFinal.Models;
 using FoodDeliveryWebAppFinal.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -41,5 +42,27 @@ public class AccountRepository : IAccountRepository
     public async Task LogoutAsync()
     {
         await _signInManager.SignOutAsync();
+    }
+    
+    public async Task<AppUser?> GetCurrentUserAsync(ClaimsPrincipal user)
+    {
+        return await _userManager.GetUserAsync(user);
+    }
+
+    public async Task<bool> UpdateProfileAsync(ClaimsPrincipal user, EditView model)
+    {
+        var currentUser = await _userManager.GetUserAsync(user);
+        if (currentUser == null)
+        {
+            return false;
+        }
+        
+        currentUser.FullName = model.FullName;
+        currentUser.Address = model.Address;
+        currentUser.PhoneNumber = model.PhoneNumber;
+        currentUser.Age = model.Age;
+
+        var result = await _userManager.UpdateAsync(currentUser);
+        return result.Succeeded;
     }
 }

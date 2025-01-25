@@ -98,7 +98,49 @@ public class AccountController : Controller
         }
         return View(model);
     }
+    
+    // GET: Edit
+    [HttpGet]
+    public async Task<IActionResult> Edit()
+    {
+        var user = await _accountRepository.GetCurrentUserAsync(User);
+        if (user == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
 
+        var model = new EditView
+        {
+            FullName = user.FullName,
+            Address = user.Address,
+            PhoneNumber = user.PhoneNumber,
+            Age = user.Age,
+            AgeOptions = Enumerable.Range(18, 83).ToList()
+        };
+
+        return View(model);
+    }
+
+    // POST: Edit
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(EditView model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var result = await _accountRepository.UpdateProfileAsync(User, model);
+
+        if (result)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        ModelState.AddModelError(string.Empty, "An error occurred while updating your profile.");
+        return View(model);
+    }
     // POST: Logout
     [HttpPost]
     [ValidateAntiForgeryToken]
