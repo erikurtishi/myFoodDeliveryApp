@@ -14,4 +14,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
     }
+    public DbSet<Restaurant> Restaurants { get; set; }
+    public DbSet<Driver> Drivers { get; set; }
+
 }
