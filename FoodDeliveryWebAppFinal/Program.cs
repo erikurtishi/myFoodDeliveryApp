@@ -1,8 +1,10 @@
+using FoodDeliveryWebAppFinal.Controllers;
 using FoodDeliveryWebAppFinal.Data;
 using FoodDeliveryWebAppFinal.Models;
 using FoodDeliveryWebAppFinal.Repositories.Implementations;
 using FoodDeliveryWebAppFinal.Repositories.Interfaces;
 using FoodDeliveryWebAppFinal.Seeders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +17,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; 
+        options.AccessDeniedPath = "/Account/AccessDenied"; 
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+builder.Services.AddScoped<IHomeRepository, HomeRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 
 var app = builder.Build();

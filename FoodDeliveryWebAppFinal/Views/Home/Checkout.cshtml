@@ -1,0 +1,50 @@
+@model List<FoodDeliveryWebAppFinal.Models.OrderItem>
+
+<div class="container py-5">
+    <h4 style="color: #ff9800;">Checkout</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MenuItem.Name</td>
+                <td>
+                    <form asp-action="UpdateOrderItem" method="post" style="display: inline;">
+                        <input type="hidden" name="orderItemId" value="@item.OrderItemID" />
+                        <input type="number" name="quantity" value="@item.Quantity" style="width: 60px;" min="1" />
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </td>
+                <td>@item.MenuItem.Price.ToString("C")</td>
+                <td>@item.SubTotal.ToString("C")</td>
+                <td>
+                    <form asp-action="RemoveOrderItem" method="post" style="display: inline;">
+                        <input type="hidden" name="orderItemId" value="@item.OrderItemID" />
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <h5>Total: $@ViewData["OrderTotal"].ToString()</h5>
+
+    <form asp-action="CompleteCheckout" method="post">
+        <input type="hidden" name="orderId" value="@Model.FirstOrDefault()?.OrderID" />
+        <button type="submit" class="btn" style="
+            background-color: #ff9800;
+            color: white;
+            font-weight: 500;
+        ">Complete Order</button>
+    </form>
+</div>
