@@ -1,0 +1,86 @@
+@model FoodDeliveryWebAppFinal.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Edit Menu Item";
+}
+
+<style>
+    .auth-footer {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .auth-footer a {
+        color: #ff9800;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 700px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <h2 style="color: #ff9800; font-weight: 600; text-align: center; margin-bottom: 1.5rem;">Edit Menu Item</h2>
+        <form asp-action="EditMenuItem" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="MenuItemID" />
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhotoUrl" class="form-label">Photo URL</label>
+                <input asp-for="PhotoUrl" class="form-control" />
+                <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryID" class="form-label">Category</label>
+                <select asp-for="CategoryID" class="form-control" asp-items="@(new SelectList(ViewData["Categories"] as List<Category>, "CategoryID", "Name"))">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IsAvailable" class="form-label">Available</label>
+                <input asp-for="IsAvailable" class="form-check-input" type="checkbox" />
+                <span asp-validation-for="IsAvailable" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-bold mb-3" style="
+                background-color: #ff9800; 
+                border-color: #ff9800; 
+                color: white;
+            ">Save Changes</button>
+        </form>
+        <div class="auth-footer">
+            <a asp-action="MenuItems" asp-controller="Restaurant">Back to Home</a>
+        </div>
+    </div>
+</div>

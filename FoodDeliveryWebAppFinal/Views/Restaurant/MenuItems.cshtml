@@ -1,0 +1,105 @@
+@model List<FoodDeliveryWebAppFinal.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Menu Items";
+}
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #ff9800; font-weight: 600;">Menu Items</h2>
+            <a asp-action="CreateMenuItem" class="btn btn-sm" style="
+                background-color: #ff9800;
+                color: white;
+                padding: 8px 16px;
+                font-weight: 500;
+                border-radius: 5px;
+            ">Create Menu Item</a>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p style="color: #ff9800; text-align: center; font-weight: 500;">No menu items found. Please create one.</p>
+        }
+        else
+        {
+            <table class="table table-striped" style="
+                border: 1px solid #ff9800;
+                border-radius: 8px;
+                overflow: hidden;
+            ">
+                <thead style="background-color: #ff9800; color: white;">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Category?.Name</td>
+                        <td>@(item.IsAvailable ? "Yes" : "No")</td>
+                        <td>
+                            <a asp-action="EditMenuItem" asp-route-id="@item.MenuItemID" class="btn btn-sm" style="
+                                    background-color: #ff9800;
+                                    color: white;
+                                    padding: 5px 10px;
+                                    font-weight: 500;
+                                    border-radius: 5px;
+                                    margin-right: 5px;
+                                ">Edit</a>
+                            <form asp-action="DeleteMenuItem" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@item.MenuItemID" />
+                                <button type="submit" class="btn btn-sm" style="
+                                        background-color: #dc3545;
+                                        color: white;
+                                        padding: 5px 10px;
+                                        font-weight: 500;
+                                        border-radius: 5px;
+                                        border: none;
+                                    ">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<style>
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+
+    .btn-sm {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+</style>

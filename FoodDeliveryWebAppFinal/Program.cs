@@ -18,6 +18,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
 
 var app = builder.Build();
@@ -25,8 +26,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    // var context = services.GetRequiredService<AppDbContext>();
+    var context = services.GetRequiredService<AppDbContext>();
     await UserSeeder.SeedAsync(services);
+    await CategorySeeder.SeedCategoriesAsync(context);
 }
 
 // Configure the HTTP request pipeline.

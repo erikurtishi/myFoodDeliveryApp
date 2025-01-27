@@ -3,33 +3,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDeliveryWebAppFinal.Models;
 
-public class Restaurant
+public class MenuItem
 {
     [Key]
-    public int RestaurantID { get; set; }
+    public int MenuItemID { get; set; }
 
     [Required]
     public string Name { get; set; }
 
     public string Description { get; set; }
 
-    public string OperatingHours { get; set; } 
+    [Required]
+    public decimal Price { get; set; }
 
     public string PhotoUrl { get; set; } 
 
-    public decimal Balance { get; set; } = 0.00m; 
+    public bool IsAvailable { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    [Required]
+    public int RestaurantID { get; set; }
+
+    [ForeignKey("RestaurantID")]
+    public Restaurant Restaurant { get; set; }
 
     [Required]
-    public string UserID { get; set; } 
+    public int CategoryID { get; set; } 
 
-    [ForeignKey("UserID")]
-    public AppUser User { get; set; }
-
-    public ICollection<MenuItem> MenuItems { get; set; }
-    
-    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    [ForeignKey("CategoryID")]
+    public Category Category { get; set; } 
 }
