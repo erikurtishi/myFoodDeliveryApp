@@ -16,5 +16,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     }
     public DbSet<Restaurant> Restaurants { get; set; }
     public DbSet<Driver> Drivers { get; set; }
-
+    public DbSet<MenuItem> MenuItems { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 }

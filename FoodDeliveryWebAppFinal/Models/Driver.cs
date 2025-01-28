@@ -6,7 +6,7 @@ namespace FoodDeliveryWebAppFinal.Models;
 public class Driver
 {
     [Key]
-    public int Id { get; set; }
+    public int DriverID { get; set; }
     public string VehicleType { get; set; } 
     public string LicenseNumber { get; set; }
     [Required]
@@ -15,5 +15,5 @@ public class Driver
     
     public AppUser User { get; set; }
 
-    // public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
 }

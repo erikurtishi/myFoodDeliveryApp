@@ -1,0 +1,43 @@
+﻿@model List<FoodDeliveryWebAppFinal.Models.MenuItem>
+
+<div class="container py-5" style="min-height: 100vh;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 style="color: #ff9800; font-weight: 600;">Menu Items for Restaurant</h4>
+        <a asp-action="Index" class="btn" style="
+            background-color: #ff9800;
+            color: white;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+        ">Back to Home</a>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; border: none;">
+                    <img src="@item.PhotoUrl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center" style="background-color: papayawhip;">
+                        <h5 class="card-title" style="font-weight: 600; color: #ff9800;">@item.Name</h5>
+                        <p class="card-text" style="color: #333;">Price: @item.Price.ToString("F2") MKD</p>
+                        <p class="card-text" style="color: #777;">Category: @item.Category?.Name</p>
+                        <p class="card-text" style="color: #777;">Restaurant: @item.Restaurant?.Name</p>
+                        <form asp-action="AddToOrder" method="post" style="display: inline;">
+                            <input type="hidden" name="menuItemId" value="@item.MenuItemID" />
+                            <button type="submit" class="btn" style="
+                        background-color: #ff9800;
+                        color: white;
+                        font-weight: 500;
+                    ">Add to Order</button>
+                        </form>
+                        <a asp-action="MenuItemDetails" asp-route-id="@item.MenuItemID" class="btn btn-outline-warning" style="
+                    border-color: #ff9800;
+                    color: #ff9800;
+                    font-weight: 500;
+                ">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

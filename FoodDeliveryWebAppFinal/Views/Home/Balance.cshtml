@@ -1,0 +1,46 @@
+@model FoodDeliveryWebAppFinal.Models.AppUser
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 600px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <h2 style="color: #ff9800; font-weight: 600; text-align: center;">Your Balance</h2>
+        <p style="color: #333; text-align: center; font-size: 1.2rem;">Current Balance: @Model.Balance.ToString("F2") MKD</p>
+
+        <form asp-action="Deposit" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="amount" style="color: #ff9800; font-weight: 500;">Deposit Amount</label>
+                <input type="number" name="amount" class="form-control" style="
+                    border: 1px solid #ff9800;
+                    border-radius: 8px;
+                " step="0.01" min="0.01" placeholder="Enter amount..." required />
+            </div>
+            <button type="submit" class="btn mt-3" style="
+                background-color: #ff9800;
+                color: white;
+                font-weight: 500;
+                padding: 10px 20px;
+                border-radius: 8px;
+            ">Deposit</button>
+        </form>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-4">
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-4">
+                @TempData["Error"]
+            </div>
+        }
+    </div>
+</div>

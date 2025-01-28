@@ -1,0 +1,119 @@
+@model List<FoodDeliveryWebAppFinal.Models.OrderItem>
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 1100px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #ff9800; font-weight: 600;">Checkout</h2>
+            <a asp-action="Index" class="btn btn-sm" style="
+                background-color: #ff9800;
+                color: white;
+                padding: 8px 16px;
+                font-weight: 500;
+                border-radius: 5px;
+            ">Add More</a>
+        </div>
+
+        <table class="table table-striped" style="
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead style="background-color: #ff9800; color: white;">
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MenuItem.Name</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <form asp-action="UpdateOrderItem" method="post" style="display: flex; align-items: center;">
+                                <input type="hidden" name="orderItemId" value="@item.OrderItemID" />
+                                <input type="number" name="quantity" value="@item.Quantity" class="form-control" style="
+                                    width: 80px;
+                                    border: 1px solid #ff9800;
+                                    border-radius: 8px;
+                                    text-align: center;
+                                    margin-right: 10px;
+                                " min="1" />
+                                <button type="submit" class="btn btn-sm" style="
+                                    background-color: #ff9800;
+                                    color: white;
+                                    font-weight: 500;
+                                    border-radius: 5px;
+                                ">Update</button>
+                            </form>
+                        </div>
+                    </td>
+                    <td>@item.MenuItem.Price.ToString("C")</td>
+                    <td>@item.SubTotal.ToString("C")</td>
+                    <td>
+                        <form asp-action="RemoveOrderItem" method="post" style="display: inline;">
+                            <input type="hidden" name="orderItemId" value="@item.OrderItemID" />
+                            <button type="submit" class="btn btn-danger btn-sm" style="
+                                background-color: #dc3545;
+                                color: white;
+                                font-weight: 500;
+                                border-radius: 5px;
+                            ">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h5 style="color: #ff9800; font-weight: 600;">Total: @ViewData["OrderTotal"].ToString() MKD</h5>
+            <form asp-action="CompleteCheckout" method="post">
+                <input type="hidden" name="orderId" value="@Model.FirstOrDefault()?.OrderID" />
+                <button type="submit" class="btn" style="
+                    background-color: #ff9800;
+                    color: white;
+                    font-weight: 500;
+                    padding: 8px 16px;
+                    border-radius: 5px;
+                ">Complete Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 1100px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+
+    .btn-success, .btn-danger {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+</style>

@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model dynamic
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@if (TempData["Notification"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["Notification"]
+    </div>
+}
+<div class="container py-5" style="min-height: 100vh;">
+    <div class="row">
+        <div class="col-md-3">
+            <h4 style="color: #ff9800; font-weight: 600;">Categories</h4>
+            <ul class="list-group">
+                @foreach (var category in ViewData["Categories"] as List<FoodDeliveryWebAppFinal.Models.Category>)
+                {
+                    <li class="list-group-item" style="border-radius: 8px; margin-bottom: 8px; background-color: papayawhip; border-color: #ff9800;">
+                        <a asp-action="MenuItemsByCategory" asp-route-id="@category.CategoryID" style="color: #ff9800; font-weight: 500;">
+                            @category.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <div class="mb-4">
+                <form method="get" action="">
+                    <input type="text" class="form-control" style="
+                        border-radius: 20px;
+                        border: 1px solid #ff9800;
+                        padding: 10px 20px;
+                        font-size: 1rem;
+                        background-color: papayawhip;
+                    " placeholder="Search for restaurants or menu items...">
+                </form>
+            </div>
+
+            <h4 style="color: #ff9800; font-weight: 600;">Restaurants</h4>
+            <div class="row">
+                @foreach (var restaurant in ViewData["Restaurants"] as List<FoodDeliveryWebAppFinal.Models.Restaurant>)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; border: none;">
+                            <img src="@restaurant.PhotoUrl" class="card-img-top" alt="@restaurant.Name" style="height: 200px; object-fit: cover;">
+                            <div class="card-body text-center" style="background-color: papayawhip;">
+                                <h5 class="card-title" style="font-weight: 600; color: #ff9800;">@restaurant.Name</h5>
+                                <p class="card-text" style="color: #333;">@restaurant.Description</p>
+                                <a asp-action="MenuItemsByRestaurant" asp-route-id="@restaurant.RestaurantID" class="btn btn-warning" style="
+                                    background-color: #ff9800;
+                                    border-color: #ff9800;
+                                    color: white;
+                                    font-weight: 500;
+                                ">View Menu</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
