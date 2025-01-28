@@ -9,9 +9,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cc95ba2-ef6c-4056-9879-ec2ab87e5540" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Data/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Data/AppDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FoodDeliveryWebAppFinal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FoodDeliveryWebAppFinal/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AdminController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Implementations/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Implementations/OrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Interfaces/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Interfaces/IOrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Admin/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Admin/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Checkout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Checkout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByCategory.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByCategory.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByRestaurant.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByRestaurant.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Restaurant/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Restaurant/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Shared/_Layout.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,15 +32,21 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RestaurantController-Testing" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/77fc0eb92b774686bbae91cb92331703d83600/0d/49490f3b/Monitor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bf9021a960b74107a7e141aa06bc9d8a0a53c929178c2fb95b1597be8af8dc/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2s7iNdwxqyspJC3g8fLXWmMMEu3" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -42,7 +58,7 @@
     ".NET Launch Settings Profile.FoodDeliveryWebAppFinal: http.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "AccountController",
+    "git-widget-placeholder": "RestauantController",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
