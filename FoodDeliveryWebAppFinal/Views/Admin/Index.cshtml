@@ -5,7 +5,6 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
 
-    // Fetch the current user's full name
     var currentUser = await UserManager.GetUserAsync(User);
     string fullName = currentUser?.FullName ?? "Admin";
 }
@@ -44,7 +43,6 @@
             </div>
         </div>
 
-        <!-- User Table -->
         <table class="table table-striped" style="
             border: 1px solid #ff9800;
             border-radius: 8px;
@@ -70,7 +68,6 @@
                     <td>@user.Address</td>
                     <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
                     <td>
-                        <!-- Delete Button -->
                         <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display: inline;">
                             <input type="hidden" name="id" value="@user.Id" />
                             <button type="submit" class="btn btn-danger btn-sm" style="
@@ -93,7 +90,6 @@
     </div>
 </div>
 
-<!-- Add any custom styles -->
 <style>
     .auth-card {
         background: papayawhip;

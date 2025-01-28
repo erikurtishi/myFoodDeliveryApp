@@ -19,7 +19,7 @@ public class AdminController : Controller
     public async Task<IActionResult> Index()
     {
         var users = await _adminRepository.GetAllUsersAsync();
-        return View(users); // Return a view to list users
+        return View(users); 
     }
     // GET: CreateDriver
     [HttpGet]
@@ -70,7 +70,7 @@ public class AdminController : Controller
         return View(model);
     }
 
-    
+    // POST: DeleteUser
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteUser(string id)

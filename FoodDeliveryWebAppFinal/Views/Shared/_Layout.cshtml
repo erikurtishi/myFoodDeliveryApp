@@ -88,26 +88,59 @@
                     <img src="~/images/logo.png" alt="Logo" />
                     <span class="navbar-title">FoodDeliveryWebApp</span>
                 </a>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto">
+                        @if (User.IsInRole("BasicUser"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Balance" asp-controller="Home">Check Balance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="OrderHistory" asp-controller="Home">Order History</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Checkout" asp-controller="Home">Checkout</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Restaurant"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Restaurant">Restaurant Dashboard</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Admin">Manage Users</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
                 <div class="ms-auto">
                     <ul class="navbar-nav">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
-                            if (currentUser != null && await UserManager.IsInRoleAsync(currentUser, "BasicUser"))
+                            if (currentUser != null)
                             {
                                 <li class="nav-item">
                                     <a class="btn btn-outline-warning nav-link" asp-controller="Account" asp-action="Edit">Edit Profile</a>
                                 </li>
                             }
+
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-link nav-link">
-                                        Logout (@{
+                                        Logout (
+                                        @{
                                             if (currentUser != null)
                                             {
                                                 @currentUser.FullName
                                             }
-                                        })
+                                        }
+                                        )
                                     </button>
                                 </form>
                             </li>
@@ -126,6 +159,7 @@
             </div>
         </nav>
     </header>
+
 
     <main role="main" class="container">
         @RenderBody()

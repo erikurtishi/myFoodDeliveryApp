@@ -1,0 +1,74 @@
+@model List<FoodDeliveryWebAppFinal.Models.Order>
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <h2 style="color: #ff9800; font-weight: 600; text-align: center; margin-bottom: 1.5rem;">Your Order History</h2>
+        <table class="table table-striped" style="
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead style="background-color: #ff9800; color: white;">
+            <tr>
+                <th>Order ID</th>
+                <th>Status</th>
+                <th>Total Amount</th>
+                <th>Ordered At</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.Status</td>
+                    <td>@order.TotalAmount.ToString("F2") MKD</td>
+                    <td>@order.CreatedAt.ToString("g")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div class="auth-footer">
+            <a asp-action="Index" asp-controller="Home">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+    }
+
+    table th, table td {
+        vertical-align: middle;
+    }
+    .auth-footer {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .auth-footer a {
+        color: #ff9800;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -4,6 +4,7 @@ namespace FoodDeliveryWebAppFinal.Repositories.Interfaces;
 
 public interface IOrderRepository
 {
+    Task<List<Order>> GetOrdersByUserAsync(string userId);
     Task<Order?> GetActiveOrderForUserAsync(string userId);
     Task<bool> AddMenuItemToOrderAsync(OrderItem orderItem);
     Task<bool> UpdateOrderItemAsync(OrderItem orderItem);

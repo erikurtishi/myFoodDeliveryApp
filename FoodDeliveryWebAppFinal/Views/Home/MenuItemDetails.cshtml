@@ -1,0 +1,54 @@
+@model FoodDeliveryWebAppFinal.Models.MenuItem
+
+<div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 600px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <div class="text-center">
+            <img src="@Model.PhotoUrl" alt="@Model.Name" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto; border-radius: 15px;">
+            <h2 style="color: #ff9800; font-weight: 600;">@Model.Name</h2>
+            <p style="color: #333;">Price: @Model.Price.ToString("F2") MKD</p>
+            <p style="color: #777;">Category: @Model.Category?.Name</p>
+            <p style="color: #777;">Restaurant: @Model.Restaurant?.Name</p>
+            <p style="color: #555; margin-top: 15px;">@Model.Description</p>
+        </div>
+        <div class="text-center mt-4">
+            <form asp-action="AddToOrder" method="post" style="display: inline;">
+                <input type="hidden" name="menuItemId" value="@Model.MenuItemID" />
+                <button type="submit" class="btn" style="
+                    background-color: #ff9800;
+                    color: white;
+                    font-weight: 500;
+                    padding: 8px 16px;
+                    border-radius: 5px;
+                ">Add to Order</button>
+            </form>
+            <a asp-action="Index" class="btn btn-outline-warning" style="
+                border-color: #ff9800;
+                color: #ff9800;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 5px;
+            ">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-card {
+        background: papayawhip;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-card h2 {
+        color: #ff9800;
+        font-weight: 600;
+    }
+</style>

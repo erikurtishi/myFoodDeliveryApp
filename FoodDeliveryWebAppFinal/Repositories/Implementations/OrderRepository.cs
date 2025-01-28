@@ -14,6 +14,15 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
+    public async Task<List<Order>> GetOrdersByUserAsync(string userId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.MenuItem)
+            .Where(o => o.UserID == userId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
     public async Task<Order?> GetActiveOrderForUserAsync(string userId)
     {
         return await _context.Orders
@@ -68,7 +77,7 @@ public class OrderRepository : IOrderRepository
         var order = await _context.Orders.FindAsync(orderId);
         if (order == null) return false;
 
-        order.Status = "Completed";
+        order.Status = "Ordered";
         order.UpdatedAt = DateTime.UtcNow;
 
         return await _context.SaveChangesAsync() > 0;
