@@ -8,21 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cc95ba2-ef6c-4056-9879-ec2ab87e5540" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FoodDeliveryWebAppFinal/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FoodDeliveryWebAppFinal/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/AdminController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Implementations/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Implementations/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Interfaces/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Repositories/Interfaces/IOrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Admin/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Admin/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Checkout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Checkout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByCategory.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByCategory.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByRestaurant.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Home/MenuItemsByRestaurant.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Restaurant/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Restaurant/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FoodDeliveryWebAppFinal/Views/Shared/_Layout.cshtml" afterDir="false" />
-    </list>
+    <list default="true" id="3cc95ba2-ef6c-4056-9879-ec2ab87e5540" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
