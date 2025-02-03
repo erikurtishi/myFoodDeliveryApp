@@ -109,6 +109,12 @@
                                 <a class="nav-link" asp-action="Index" asp-controller="Restaurant">Restaurant Dashboard</a>
                             </li>
                         }
+                        @if (User.IsInRole("Driver"))
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Dashboard" asp-controller="Driver">Driver Dashboard</a>
+                        </li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
