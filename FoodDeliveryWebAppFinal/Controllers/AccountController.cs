@@ -1,5 +1,6 @@
 using FoodDeliveryWebAppFinal.Models;
 using FoodDeliveryWebAppFinal.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryWebAppFinal.Controllers;
@@ -101,6 +102,7 @@ public class AccountController : Controller
     
     // GET: Edit
     [HttpGet]
+    [Authorize(Roles = "BasicUser")]
     public async Task<IActionResult> Edit()
     {
         var user = await _accountRepository.GetCurrentUserAsync(User);
@@ -123,6 +125,7 @@ public class AccountController : Controller
 
     // POST: Edit
     [HttpPost]
+    [Authorize(Roles = "BasicUser")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditView model)
     {

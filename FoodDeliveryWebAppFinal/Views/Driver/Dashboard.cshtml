@@ -1,72 +1,79 @@
 @model IEnumerable<FoodDeliveryWebAppFinal.Models.Order>
 
 @{
-    ViewData["Title"] = "Driver Dashboard";
+ViewData["Title"] = "Driver Dashboard";
 }
 
-<h2>Driver Dashboard</h2>
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <h2 style="color: #ff9800; font-weight: 600; text-align: center;">Driver Dashboard</h2>
 
-@if (!Model.Any())
-{
-    <p>No orders assigned to you at the moment.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Customer Email</th>
-                <th>Status</th>
-                <th>Total Amount</th>
-                <th>Created At</th>
-                <th>Order Items</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
+        @if (!Model.Any())
+        {
+        <p style="color: #ff9800; text-align: center; font-weight: 500;">No orders assigned to you at the moment.</p>
+        }
+        else
+        {
+        <div class="row">
             @foreach (var order in Model)
             {
-                <tr>
-                    <td>@order.OrderID</td>
-                    <td>@order.User?.Email</td>
-                    <td>@order.Status</td>
-                    <td>@order.TotalAmount.ToString("C")</td>
-                    <td>@order.CreatedAt.ToString("g")</td>
-                    <td>
-                        @if (order.OrderItems != null && order.OrderItems.Any())
-                        {
+            <div class="col-md-6 mb-4">
+                <div class="card p-3" style="
+                            background-color: #fff6e9;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                        ">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #ff9800; font-weight: 600;">Order #@order.OrderID</h5>
+                        <p class="card-text">
+                            <strong>Customer:</strong> @(order.User?.FullName ?? "N/A") <br>
+                            <strong>Address:</strong> @(order.User?.Address ?? "N/A") <br>
+                            <strong>Phone:</strong> @(order.User?.PhoneNumber ?? "N/A") <br>
+                            <strong>Status:</strong> <span style="color: @(order.Status == "Out for Delivery" ? "green" : "red"); font-weight: bold;">@order.Status</span> <br>
+                            <strong>Total:</strong> @order.TotalAmount.ToString("C") <br>
+                            <strong>Created:</strong> @order.CreatedAt.ToString("g") <br>
+                        </p>
+
+                        <div>
+                            <h6 style="color: #ff9800;">Order Items:</h6>
+                            @if (order.OrderItems != null && order.OrderItems.Any())
+                            {
                             <ul>
                                 @foreach (var item in order.OrderItems)
                                 {
-                                    <li>
-                                        @item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")
-                                    </li>
+                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")</li>
                                 }
                             </ul>
-                        }
-                        else
-                        {
-                            <span>No items</span>
-                        }
-                    </td>
-                    <td>
+                            }
+                            else
+                            {
+                            <p style="color: gray;">No items in this order.</p>
+                            }
+                        </div>
+
                         @if (order.Status == "Out for Delivery")
                         {
-                            <form asp-action="MarkDelivered" method="post" style="margin:0;">
-                                <input type="hidden" name="orderId" value="@order.OrderID" />
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    Mark Delivered
-                                </button>
-                            </form>
+                        <form asp-action="MarkDelivered" method="post" class="mt-2">
+                            <input type="hidden" name="orderId" value="@order.OrderID" />
+                            <button type="submit" class="btn btn-success w-100">Mark Delivered</button>
+                        </form>
                         }
                         else
                         {
-                            <span>Delivered</span>
+                        <p style="color: gray; text-align: center;">Delivered</p>
                         }
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
             }
-        </tbody>
-    </table>
-}
+        </div>
+        }
+    </div>
+</div>
