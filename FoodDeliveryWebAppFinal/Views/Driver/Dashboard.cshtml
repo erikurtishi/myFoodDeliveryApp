@@ -1,0 +1,72 @@
+@model IEnumerable<FoodDeliveryWebAppFinal.Models.Order>
+
+@{
+    ViewData["Title"] = "Driver Dashboard";
+}
+
+<h2>Driver Dashboard</h2>
+
+@if (!Model.Any())
+{
+    <p>No orders assigned to you at the moment.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Email</th>
+                <th>Status</th>
+                <th>Total Amount</th>
+                <th>Created At</th>
+                <th>Order Items</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.User?.Email</td>
+                    <td>@order.Status</td>
+                    <td>@order.TotalAmount.ToString("C")</td>
+                    <td>@order.CreatedAt.ToString("g")</td>
+                    <td>
+                        @if (order.OrderItems != null && order.OrderItems.Any())
+                        {
+                            <ul>
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li>
+                                        @item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No items</span>
+                        }
+                    </td>
+                    <td>
+                        @if (order.Status == "Out for Delivery")
+                        {
+                            <form asp-action="MarkDelivered" method="post" style="margin:0;">
+                                <input type="hidden" name="orderId" value="@order.OrderID" />
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Mark Delivered
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

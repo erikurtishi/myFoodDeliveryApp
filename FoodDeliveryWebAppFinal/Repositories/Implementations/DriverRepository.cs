@@ -24,5 +24,10 @@ namespace FoodDeliveryWebAppFinal.Repositories.Implementations
         {
             return await _context.Drivers.FirstOrDefaultAsync(d => d.DriverID == driverId);
         }
+        public async Task<Driver?> GetDriverByUserIdAsync(string userId)
+        {
+            return await _context.Drivers.Include(d => d.User)
+                .FirstOrDefaultAsync(d => d.UserID == userId);
+        }
     }
 }
