@@ -171,6 +171,7 @@ public class HomeController : Controller
         return RedirectToAction("Checkout");
     }
 
+    
     [HttpPost]
     [Authorize(Roles = "BasicUser")]
     public async Task<IActionResult> CompleteCheckout(int orderId)
@@ -276,4 +277,35 @@ public class HomeController : Controller
         TempData["Success"] = "Deposit successful!";
         return RedirectToAction("Balance");
     }
+    [HttpGet]
+    public async Task<IActionResult> Search(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            TempData["Notification"] = "Please enter a search term.";
+            return RedirectToAction("Index");
+        }
+
+        // Search for restaurants whose names contain the query (case-insensitive)
+        var restaurants = await _context.Restaurants
+            .Where(r => EF.Functions.Like(r.Name, $"%{query}%"))
+            .ToListAsync();
+
+        // Search for menu items whose names contain the query
+        var menuItems = await _context.MenuItems
+            .Where(m => EF.Functions.Like(m.Name, $"%{query}%"))
+            .Include(m => m.Category)
+            .Include(m => m.Restaurant)
+            .ToListAsync();
+
+        var viewModel = new SearchViewModel
+        {
+            Query = query,
+            Restaurants = restaurants,
+            MenuItems = menuItems
+        };
+
+        return View(viewModel);
+    }
 }
+

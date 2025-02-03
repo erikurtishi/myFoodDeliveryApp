@@ -1,6 +1,11 @@
-namespace FoodDeliveryWebAppFinal.Models;
+using System.Collections.Generic;
 
-public class SearchVIewModel
+namespace FoodDeliveryWebAppFinal.Models
 {
-    
+    public class SearchViewModel
+    {
+        public string Query { get; set; }
+        public List<Restaurant> Restaurants { get; set; } = new();
+        public List<MenuItem> MenuItems { get; set; } = new();
+    }
 }

@@ -79,10 +79,10 @@ public class AccountController : Controller
                     {
                         return RedirectToAction("Index", "Admin");
                     }
-                    // else if (await _accountRepository.IsInRoleAsync(user, "Driver"))
-                    // {
-                    //     return RedirectToAction("Index", "Driver");
-                    // }
+                    else if (await _accountRepository.IsInRoleAsync(user, "Driver"))
+                    {
+                        return RedirectToAction("Dashboard", "Driver");
+                    }
                     else if (await _accountRepository.IsInRoleAsync(user, "Restaurant"))
                     {
                         return RedirectToAction("Index", "Restaurant");
