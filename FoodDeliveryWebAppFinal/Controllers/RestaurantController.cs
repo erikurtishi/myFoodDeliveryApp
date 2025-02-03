@@ -14,13 +14,16 @@ namespace FoodDeliveryWebAppFinal.Controllers;
 public class RestaurantController : Controller
 {
     private readonly IRestaurantRepository _restaurantRepository;
+    private readonly IOrderRepository _orderRepository;
     private readonly UserManager<AppUser> _userManager;
 
     public RestaurantController(
         IRestaurantRepository restaurantRepository,
+        IOrderRepository orderRepository,
         UserManager<AppUser> userManager)
     {
         _restaurantRepository = restaurantRepository;
+        _orderRepository = orderRepository;
         _userManager = userManager;
     }
 
@@ -179,5 +182,31 @@ public class RestaurantController : Controller
         await _restaurantRepository.DeleteMenuItem(id);
 
         return RedirectToAction(nameof(MenuItems));
+    }
+    
+    public async Task<IActionResult> Orders()
+    {
+        var userEmail = User.Identity?.Name;
+        if (string.IsNullOrEmpty(userEmail))
+        {
+            return Unauthorized("User is not logged in.");
+        }
+
+        var appUser = await _userManager.FindByEmailAsync(userEmail);
+        if (appUser == null)
+        {
+            return Unauthorized("Invalid user.");
+        }
+
+        var restaurant = await _restaurantRepository.GetRestaurantByUserId(appUser.Id);
+        if (restaurant == null)
+        {
+            return NotFound("Restaurant not found.");
+        }
+
+        var orders = await _orderRepository.GetOrdersByRestaurantAsync(restaurant.RestaurantID);
+        ViewData["RestaurantName"] = restaurant.Name;
+
+        return View(orders);
     }
 }

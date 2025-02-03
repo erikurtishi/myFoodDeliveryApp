@@ -1,0 +1,57 @@
+@model IEnumerable<FoodDeliveryWebAppFinal.Models.Order>
+
+@{
+ViewData["Title"] = "Orders";
+}
+
+<h2>Orders for @ViewData["RestaurantName"]</h2>
+
+@if (!Model.Any())
+{
+<p>No orders found for your restaurant.</p>
+}
+else
+{
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>Status</th>
+        <th>Total Amount</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+        <th>Order Items</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+    <tr>
+        <td>@order.OrderID</td>
+        <td>@order.Status</td>
+        <td>@order.TotalAmount.ToString("C")</td>
+        <td>@order.CreatedAt.ToString("g")</td>
+        <td>@order.UpdatedAt.ToString("g")</td>
+        <td>
+            @if (order.OrderItems != null && order.OrderItems.Any())
+            {
+            <ul>
+                @foreach (var item in order.OrderItems)
+                {
+                <li>
+                    @* Assumes MenuItem has a 'Name' property *@
+                    @item.MenuItem.Name x @item.Quantity - @item.SubTotal.ToString("C")
+                </li>
+                }
+            </ul>
+            }
+            else
+            {
+            <span>No items</span>
+            }
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+}

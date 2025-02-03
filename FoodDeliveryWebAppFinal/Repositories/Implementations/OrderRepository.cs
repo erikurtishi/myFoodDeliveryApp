@@ -82,4 +82,15 @@ public class OrderRepository : IOrderRepository
 
         return await _context.SaveChangesAsync() > 0;
     }
+    
+    public async Task<List<Order>> GetOrdersByRestaurantAsync(int restaurantId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.MenuItem)
+            .Where(o => o.RestaurantID == restaurantId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
+
 }
