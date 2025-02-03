@@ -1,5 +1,6 @@
 using FoodDeliveryWebAppFinal.Models;
 using FoodDeliveryWebAppFinal.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryWebAppFinal.Controllers;
@@ -79,10 +80,10 @@ public class AccountController : Controller
                     {
                         return RedirectToAction("Index", "Admin");
                     }
-                    // else if (await _accountRepository.IsInRoleAsync(user, "Driver"))
-                    // {
-                    //     return RedirectToAction("Index", "Driver");
-                    // }
+                    else if (await _accountRepository.IsInRoleAsync(user, "Driver"))
+                    {
+                        return RedirectToAction("Dashboard", "Driver");
+                    }
                     else if (await _accountRepository.IsInRoleAsync(user, "Restaurant"))
                     {
                         return RedirectToAction("Index", "Restaurant");
@@ -101,6 +102,7 @@ public class AccountController : Controller
     
     // GET: Edit
     [HttpGet]
+    [Authorize(Roles = "BasicUser")]
     public async Task<IActionResult> Edit()
     {
         var user = await _accountRepository.GetCurrentUserAsync(User);
@@ -123,6 +125,7 @@ public class AccountController : Controller
 
     // POST: Edit
     [HttpPost]
+    [Authorize(Roles = "BasicUser")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(EditView model)
     {

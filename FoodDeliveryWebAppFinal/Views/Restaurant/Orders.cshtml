@@ -4,68 +4,85 @@
     ViewData["Title"] = "Orders";
 }
 
-<h2>Orders for @ViewData["RestaurantName"]</h2>
+<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
+    <div class="auth-card" style="
+        background: papayawhip;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+        <h2 style="color: #ff9800; font-weight: 600; text-align: center;">
+            Orders for @ViewData["RestaurantName"]
+        </h2>
 
-@if (!Model.Any())
-{
-    <p>No orders found for your restaurant.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Status</th>
-                <th>Total Amount</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Order Items</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model)
-            {
-                <tr>
-                    <td>@order.OrderID</td>
-                    <td>@order.Status</td>
-                    <td>@order.TotalAmount.ToString("C")</td>
-                    <td>@order.CreatedAt.ToString("g")</td>
-                    <td>@order.UpdatedAt.ToString("g")</td>
-                    <td>
-                        @if (order.OrderItems != null && order.OrderItems.Any())
-                        {
-                            <ul>
-                                @foreach (var item in order.OrderItems)
-                                {
-                                    <li>
-                                        @* Assumes MenuItem has a 'Name' property *@
-                                        @item.MenuItem.Name x @item.Quantity - @item.SubTotal.ToString("C")
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <span>No items</span>
-                        }
-                    </td>
-                    <td>
-                        @if (order.Status == "Ordered")
-                        {
-                            <form asp-action="AssignDriver" method="post" style="display:inline">
-                                <input type="hidden" name="orderId" value="@order.OrderID" />
-                                <button type="submit" class="btn btn-primary btn-sm">Assign Driver</button>
-                            </form>
-                        }
-                        else if (order.Status == "Out for Delivery")
-                        {
-                            <span>Delivery assigned</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        @if (!Model.Any())
+        {
+            <p style="color: #ff9800; text-align: center; font-weight: 500;">No orders found for your restaurant.</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var order in Model)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-3" style="
+                            background-color: #fff6e9;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                        ">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: #ff9800; font-weight: 600;">Order #@order.OrderID</h5>
+                                <p class="card-text">
+                                    <strong>Status:</strong> 
+                                    <span style="color: @(order.Status == "Ordered" ? "blue" : order.Status == "Out for Delivery" ? "green" : "red"); font-weight: bold;">
+                                        @order.Status
+                                    </span> <br>
+                                    <strong>Total:</strong> @order.TotalAmount.ToString("C") <br>
+                                    <strong>Created:</strong> @order.CreatedAt.ToString("g") <br>
+                                    <strong>Updated:</strong> @order.UpdatedAt.ToString("g") <br>
+                                </p>
+
+                                <div>
+                                    <h6 style="color: #ff9800;">Order Items:</h6>
+                                    @if (order.OrderItems != null && order.OrderItems.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var item in order.OrderItems)
+                                            {
+                                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <p style="color: gray;">No items in this order.</p>
+                                    }
+                                </div>
+
+                                <div class="mt-2">
+                                    @if (order.Status == "Ordered")
+                                    {
+                                        <form asp-action="AssignDriver" method="get" class="d-inline">
+                                            <input type="hidden" name="orderId" value="@order.OrderID" />
+                                            <button type="submit" class="btn btn-warning w-100">Assign Driver</button>
+                                        </form>
+                                    }
+                                    else if (order.Status == "Out for Delivery")
+                                    {
+                                        <span style="color: green; font-weight: bold;">Driver Assigned</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: gray;">Delivered</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

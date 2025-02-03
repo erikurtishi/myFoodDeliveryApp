@@ -110,11 +110,13 @@ public class OrderRepository : IOrderRepository
     public async Task<List<Order>> GetOrdersByDriverAsync(int driverId)
     {
         return await _context.Orders
+            .Include(o => o.User)
             .Include(o => o.OrderItems)
             .ThenInclude(oi => oi.MenuItem)
             .Where(o => o.DriverID == driverId)
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
+
     }
 
 }
