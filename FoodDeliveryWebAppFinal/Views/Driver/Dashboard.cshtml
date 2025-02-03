@@ -37,7 +37,7 @@ ViewData["Title"] = "Driver Dashboard";
                             <strong>Address:</strong> @(order.User?.Address ?? "N/A") <br>
                             <strong>Phone:</strong> @(order.User?.PhoneNumber ?? "N/A") <br>
                             <strong>Status:</strong> <span style="color: @(order.Status == "Out for Delivery" ? "green" : "red"); font-weight: bold;">@order.Status</span> <br>
-                            <strong>Total:</strong> @order.TotalAmount.ToString("C") <br>
+                            <strong>Total:</strong> @order.TotalAmount.ToString("F2") MKD<br>
                             <strong>Created:</strong> @order.CreatedAt.ToString("g") <br>
                         </p>
 
@@ -48,7 +48,7 @@ ViewData["Title"] = "Driver Dashboard";
                             <ul>
                                 @foreach (var item in order.OrderItems)
                                 {
-                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")</li>
+                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("F2") MKD</li>
                                 }
                             </ul>
                             }
