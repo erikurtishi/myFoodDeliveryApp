@@ -39,7 +39,7 @@
                                     <span style="color: @(order.Status == "Ordered" ? "blue" : order.Status == "Out for Delivery" ? "green" : "red"); font-weight: bold;">
                                         @order.Status
                                     </span> <br>
-                                    <strong>Total:</strong> @order.TotalAmount.ToString("C") <br>
+                                    <strong>Total:</strong> @order.TotalAmount.ToString("F2") MKD<br>
                                     <strong>Created:</strong> @order.CreatedAt.ToString("g") <br>
                                     <strong>Updated:</strong> @order.UpdatedAt.ToString("g") <br>
                                 </p>
@@ -51,7 +51,7 @@
                                         <ul>
                                             @foreach (var item in order.OrderItems)
                                             {
-                                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("C")</li>
+                                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("F2") MKD</li>
                                             }
                                         </ul>
                                     }
@@ -80,6 +80,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="auth-footer">
+                        <a asp-action="Index" asp-controller="Restaurant">Back to Home</a>
                     </div>
                 }
             </div>
