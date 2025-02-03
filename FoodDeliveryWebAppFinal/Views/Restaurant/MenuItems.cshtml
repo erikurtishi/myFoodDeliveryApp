@@ -78,7 +78,11 @@
                 </tbody>
             </table>
         }
+        <div class="auth-footer">
+            <a asp-action="Index" asp-controller="Restaurant">Back to Home</a>
+        </div>
     </div>
+    
 </div>
 
 <style>
@@ -101,5 +105,19 @@
     .btn-sm {
         font-size: 0.9rem;
         font-weight: 500;
+    }
+    .auth-footer {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .auth-footer a {
+        color: #ff9800;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
     }
 </style>
