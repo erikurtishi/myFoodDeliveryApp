@@ -82,4 +82,39 @@ public class OrderRepository : IOrderRepository
 
         return await _context.SaveChangesAsync() > 0;
     }
+    
+    public async Task<List<Order>> GetOrdersByRestaurantAsync(int restaurantId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.MenuItem)
+            .Where(o => o.RestaurantID == restaurantId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<Order?> GetOrderByIdAsync(int orderId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.MenuItem)
+            .FirstOrDefaultAsync(o => o.OrderID == orderId);
+    }
+
+    public async Task<bool> UpdateOrderAsync(Order order)
+    {
+        _context.Orders.Update(order);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<List<Order>> GetOrdersByDriverAsync(int driverId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.MenuItem)
+            .Where(o => o.DriverID == driverId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
+
 }
