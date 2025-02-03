@@ -12,4 +12,8 @@ public interface IOrderRepository
     Task<List<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId);
     Task<bool> CheckoutAsync(int orderId);
     Task<List<Order>> GetOrdersByRestaurantAsync(int restaurantId);
+    Task<Order?> GetOrderByIdAsync(int orderId);
+    Task<bool> UpdateOrderAsync(Order order);
+    Task<List<Order>> GetOrdersByDriverAsync(int driverId);
+
 }

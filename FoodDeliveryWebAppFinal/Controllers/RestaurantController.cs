@@ -16,15 +16,18 @@ public class RestaurantController : Controller
     private readonly IRestaurantRepository _restaurantRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IDriverRepository _driverRepository;
 
     public RestaurantController(
         IRestaurantRepository restaurantRepository,
         IOrderRepository orderRepository,
+        IDriverRepository driverRepository,
         UserManager<AppUser> userManager)
     {
         _restaurantRepository = restaurantRepository;
         _orderRepository = orderRepository;
         _userManager = userManager;
+        _driverRepository = driverRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -209,4 +212,106 @@ public class RestaurantController : Controller
 
         return View(orders);
     }
+    public async Task<IActionResult> AssignDriver(int orderId)
+    {
+        // Retrieve the order (ensure your order repository handles this correctly)
+        var order = await _orderRepository.GetOrderByIdAsync(orderId);
+        if (order == null)
+        {
+            return NotFound("Order not found.");
+        }
+        if (order.Status != "Ordered")
+        {
+            return BadRequest("Order is not in a state to be assigned a driver.");
+        }
+    
+        // Retrieve drivers (ensure the repository returns a non-null list)
+        var drivers = await _driverRepository.GetAllDriversAsync() ?? new List<Driver>();
+    
+        // Build the select list. Here we use the AppUser's UserName as the display text.
+        // Adjust this if your AppUser model uses a different property.
+        var selectListItems = drivers.Select(d => new SelectListItem
+        {
+            Value = d.DriverID.ToString(),
+            Text = d.User != null ? d.User.UserName : $"Driver {d.DriverID}"
+        }).ToList();
+    
+        var viewModel = new AssignDriverViewModel
+        {
+            OrderID = orderId,
+            DriverSelectList = new SelectList(selectListItems, "Value", "Text")
+        };
+
+        return View(viewModel);
+    }
+
+
+    [HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> AssignDriver(AssignDriverViewModel model)
+{
+    if (!ModelState.IsValid)
+    {
+        var drivers = await _driverRepository.GetAllDriversAsync() ?? new List<Driver>();
+        var selectListItems = drivers.Select(d => new SelectListItem
+        {
+            Value = d.DriverID.ToString(),
+            Text = d.User != null ? d.User.UserName : $"Driver {d.DriverID}"
+        }).ToList();
+        model.DriverSelectList = new SelectList(selectListItems, "Value", "Text");
+        return View(model);
+    }
+
+    // Retrieve the order
+    var order = await _orderRepository.GetOrderByIdAsync(model.OrderID);
+    if (order == null)
+    {
+        return NotFound("Order not found.");
+    }
+    if (order.Status != "Ordered")
+    {
+        return BadRequest("Order is not in a state that can be assigned a driver.");
+    }
+
+    // Check if the selected driver exists
+    var driver = await _driverRepository.GetDriverByIdAsync(model.SelectedDriverId);
+    if (driver == null)
+    {
+        ModelState.AddModelError("", "Selected driver does not exist.");
+        var drivers = await _driverRepository.GetAllDriversAsync() ?? new List<Driver>();
+        var selectListItems = drivers.Select(d => new SelectListItem
+        {
+            Value = d.DriverID.ToString(),
+            Text = d.User != null ? d.User.UserName : $"Driver {d.DriverID}"
+        }).ToList();
+        model.DriverSelectList = new SelectList(selectListItems, "Value", "Text");
+        return View(model);
+    }
+
+    // Update the order with the selected driver
+    order.DriverID = driver.DriverID;
+    order.Status = "Out for Delivery";
+    order.UpdatedAt = DateTime.UtcNow;
+
+    var updateResult = await _orderRepository.UpdateOrderAsync(order);
+    if (!updateResult)
+    {
+        ModelState.AddModelError("", "Failed to update order.");
+        var drivers = await _driverRepository.GetAllDriversAsync() ?? new List<Driver>();
+        var selectListItems = drivers.Select(d => new SelectListItem
+        {
+            Value = d.DriverID.ToString(),
+            Text = d.User != null ? d.User.UserName : $"Driver {d.DriverID}"
+        }).ToList();
+        model.DriverSelectList = new SelectList(selectListItems, "Value", "Text");
+        return View(model);
+    }
+
+    return RedirectToAction(nameof(Orders));
 }
+
+
+
+
+    }
+

@@ -1,0 +1,25 @@
+@model FoodDeliveryWebAppFinal.Models.AssignDriverViewModel
+
+@{
+ViewData["Title"] = "Assign Driver";
+}
+
+<h2>Assign Driver for Order @Model.OrderID</h2>
+
+<form asp-action="AssignDriver" method="post">
+    <input type="hidden" asp-for="OrderID" />
+
+    <div class="form-group">
+        <label asp-for="SelectedDriverId" class="control-label"></label>
+        <select asp-for="SelectedDriverId" class="form-control" asp-items="Model.DriverSelectList">
+            <option value="">-- Select a Driver --</option>
+        </select>
+        <span asp-validation-for="SelectedDriverId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Assign Driver</button>
+</form>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
