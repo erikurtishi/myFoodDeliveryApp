@@ -87,8 +87,11 @@ public class OrderRepository : IOrderRepository
     {
         return await _context.Orders
             .Include(o => o.OrderItems)
-            .ThenInclude(oi => oi.MenuItem)
-            .Where(o => o.RestaurantID == restaurantId)
+                .ThenInclude(oi => oi.MenuItem)
+            .Include(o => o.Driver)
+                .ThenInclude(d => d.User)
+            .Include(o => o.User)
+            .Where(o => o.RestaurantID == restaurantId && o.Status != "Pending")
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }

@@ -4,62 +4,168 @@
     ViewData["Title"] = "Edit Menu Item";
 }
 
-<style>
-    .auth-footer {
-        text-align: center;
-        margin-top: 1rem;
-    }
+@section Styles {
+    <style>
+        /* Hero Section */
+        .edit-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 3rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
-    .auth-footer a {
-        color: #ff9800;
-        font-weight: 500;
-        text-decoration: none;
-    }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .auth-footer a:hover {
-        text-decoration: underline;
-    }
-</style>
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 700px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <h2 style="color: #ff9800; font-weight: 600; text-align: center; margin-bottom: 1.5rem;">Edit Menu Item</h2>
+        /* Form Container */
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin: -2rem auto 2rem;
+            max-width: 800px;
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 0 0.2rem rgba(255, 152, 0, 0.25);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+        }
+
+        /* Checkbox styling */
+        .form-check {
+            padding: 1rem;
+            background: #fff8e1;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-check-input:checked {
+            background-color: #ff9800;
+            border-color: #ff9800;
+        }
+
+        /* Buttons */
+        .btn-submit {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #ff9800;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #ff7043;
+            text-decoration: none;
+        }
+
+        /* Validation */
+        .text-danger {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        /* Select styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+}
+
+<div class="edit-hero">
+    <div class="container">
+        <h1 class="hero-title">Edit Menu Item</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-container">
         <form asp-action="EditMenuItem" method="post">
             @Html.AntiForgeryToken()
-
             <input type="hidden" asp-for="MenuItemID" />
 
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label">Name</label>
-                <input asp-for="Name" class="form-control" />
+            <div class="mb-4">
+                <label asp-for="Name" class="form-label">Item Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter item name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label asp-for="Description" class="form-label">Description</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
+                <textarea asp-for="Description" class="form-control" placeholder="Enter item description"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Price" class="form-label">Price</label>
-                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+            <div class="mb-4">
+                <label asp-for="Price" class="form-label">Price (MKD)</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" placeholder="0.00" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label asp-for="PhotoUrl" class="form-label">Photo URL</label>
-                <input asp-for="PhotoUrl" class="form-control" />
+                <input asp-for="PhotoUrl" class="form-control" placeholder="Enter photo URL" />
                 <span asp-validation-for="PhotoUrl" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label asp-for="CategoryID" class="form-label">Category</label>
                 <select asp-for="CategoryID" class="form-control" asp-items="@(new SelectList(ViewData["Categories"] as List<Category>, "CategoryID", "Name"))">
                     <option value="">-- Select Category --</option>
@@ -67,20 +173,23 @@
                 <span asp-validation-for="CategoryID" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="IsAvailable" class="form-label">Available</label>
+            <div class="form-check">
                 <input asp-for="IsAvailable" class="form-check-input" type="checkbox" />
+                <label asp-for="IsAvailable" class="form-check-label">Available for Order</label>
                 <span asp-validation-for="IsAvailable" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 fw-bold mb-3" style="
-                background-color: #ff9800; 
-                border-color: #ff9800; 
-                color: white;
-            ">Save Changes</button>
+            <button type="submit" class="btn-submit">Save Changes</button>
+
+            <div class="text-center mt-3">
+                <a asp-action="MenuItems" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Menu Items
+                </a>
+            </div>
         </form>
-        <div class="auth-footer">
-            <a asp-action="MenuItems" asp-controller="Restaurant">Back to Home</a>
-        </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
