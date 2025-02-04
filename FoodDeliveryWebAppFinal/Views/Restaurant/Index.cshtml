@@ -1,68 +1,182 @@
 @model FoodDeliveryWebAppFinal.Models.Restaurant
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card text-center" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 700px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <img src="@Model.PhotoUrl" alt="@Model.Name" class="img-fluid rounded mb-3" style="
-            max-width: 150px;
-            border: 3px solid #ff9800;
-            border-radius: 50%;
-        ">
-        <h2 style="color: #ff9800; font-weight: 600;">@Model.Name</h2>
-        <p style="font-size: 1rem; color: #333;">@Model.Description</p>
-        <p style="font-size: 1rem; color: #333;">
-            <strong style="color: #ff9800;">Operating Hours:</strong> @Model.OperatingHours
-        </p>
-        <p style="font-size: 1rem; color: #333;">
-            <strong style="color: #ff9800;">Balance:</strong> @Model.Balance.ToString("F2") MKD
-        </p>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .restaurant-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
-        <div class="mt-4">
-            <a asp-action="MenuItems" class="btn btn-sm" style="
-                background-color: #ff9800;
-                color: white;
-                padding: 8px 16px;
-                font-weight: 500;
-                border-radius: 5px;
-                margin-right: 10px;
-            ">
-                <i class="fas fa-utensils"></i> Menu Items
-            </a>
-            <a asp-action="Orders" class="btn btn-sm" style="
-                background-color: #ff9800;
-                color: white;
-                padding: 8px 16px;
-                font-weight: 500;
-                border-radius: 5px;
-            ">
-                <i class="fas fa-receipt"></i> Check Orders
-            </a>
-        </div>
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Restaurant Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #ff9800;
+            padding: 4px;
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .restaurant-name {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .restaurant-description {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .restaurant-info {
+            margin-bottom: 2rem;
+        }
+
+        .info-label {
+            color: #ff9800;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .restaurant-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .restaurant-name {
+                font-size: 1.75rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+}
+
+<div class="restaurant-hero">
+    <div class="container">
+        <h1 class="hero-title">Restaurant Dashboard</h1>
     </div>
 </div>
 
-<style>
-    .auth-card {
-        background: papayawhip;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+<div class="container py-5">
+    <div class="d-flex justify-content-center">
+        <div class="profile-card">
+            <img src="@Model.PhotoUrl" alt="@Model.Name" class="profile-image">
+            <h2 class="restaurant-name">@Model.Name</h2>
+            <p class="restaurant-description">@Model.Description</p>
+            
+            <div class="restaurant-info">
+                <p>
+                    <span class="info-label">Operating Hours:</span>
+                    <span class="info-value">@Model.OperatingHours</span>
+                </p>
+                <p>
+                    <span class="info-label">Balance:</span>
+                    <span class="info-value">@Model.Balance.ToString("F2") DEN</span>
+                </p>
+            </div>
 
-    .auth-card h2 {
-        color: #ff9800;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .btn-sm {
-        font-size: 1rem;
-        font-weight: 500;
-    }
-</style>
+            <div class="action-buttons">
+                <a asp-action="MenuItems" class="action-btn">
+                    <i class="fas fa-utensils"></i> Menu Items
+                </a>
+                <a asp-action="Orders" class="action-btn">
+                    <i class="fas fa-receipt"></i> Check Orders
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

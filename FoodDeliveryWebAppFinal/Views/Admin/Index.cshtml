@@ -9,106 +9,196 @@
     string fullName = currentUser?.FullName ?? "Admin";
 }
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 900px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 style="color: #ff9800; font-weight: 600;">Welcome, @fullName!</h2>
-            <div>
-                <a asp-action="CreateDriver" asp-controller="Admin" class="btn btn-sm" style="
-            background-color: #ff9800;
+@section Styles {
+    <style>
+        /* Hero Section */
+        .admin-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
             color: white;
-            padding: 8px 16px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Admin Card */
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Table Styles */
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .admin-table thead {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            color: white;
+        }
+
+        .admin-table th {
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .admin-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .admin-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             font-weight: 500;
-            border-radius: 5px;
-            margin-right: 10px; 
-        ">
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .admin-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .admin-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+}
+
+<div class="admin-hero">
+    <div class="container">
+        <h1 class="hero-title">Admin Dashboard</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <h2 style="color: #ff9800; font-weight: 600;">Welcome, @fullName!</h2>
+            <div class="action-buttons">
+                <a asp-action="CreateDriver" asp-controller="Admin" class="admin-btn">
                     <i class="fas fa-user-plus"></i> Create Driver
                 </a>
-                <a asp-action="CreateRestaurant" asp-controller="Admin" class="btn btn-sm" style="
-            background-color: #ff9800;
-            color: white;
-            padding: 8px 16px;
-            font-weight: 500;
-            border-radius: 5px;
-        ">
+                <a asp-action="CreateRestaurant" asp-controller="Admin" class="admin-btn">
                     <i class="fas fa-user-plus"></i> Create Restaurant
                 </a>
             </div>
         </div>
 
-        <table class="table table-striped" style="
-            border: 1px solid #ff9800;
-            border-radius: 8px;
-            overflow: hidden;
-        ">
-            <thead style="background-color: #ff9800; color: white;">
-            <tr>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Roles</th>
-                <th>Actions</th>
-            </tr>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var user in Model)
-            {
-                <tr>
-                    <td>@user.FullName</td>
-                    <td>@user.Email</td>
-                    <td>@user.PhoneNumber</td>
-                    <td>@user.Address</td>
-                    <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
-                    <td>
-                        <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display: inline;">
-                            <input type="hidden" name="id" value="@user.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm" style="
-                                    background-color: #dc3545;
-                                    color: white;
-                                    border: none;
-                                    padding: 5px 10px;
-                                    font-weight: 500;
-                                    border-radius: 5px;
-                                    cursor: pointer;
-                                ">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.Address</td>
+                        <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
+                        <td>
+                            <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
-
-<style>
-    .auth-card {
-        background: papayawhip;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .auth-card h2 {
-        color: #ff9800;
-        font-weight: 600;
-    }
-
-    table th, table td {
-        vertical-align: middle;
-    }
-
-    .btn-success, .btn-danger {
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
-</style>

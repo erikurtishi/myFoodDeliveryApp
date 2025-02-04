@@ -1,92 +1,338 @@
-@model FoodDeliveryWebAppFinal.Models.SearchViewModel
+@model List<FoodDeliveryWebAppFinal.Models.MenuItem>
 
-@if (TempData["Notification"] != null)
-{
-    <div class="alert alert-warning">
-        @TempData["Notification"]
-    </div>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .search-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Search Form */
+        .search-form {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            border: none;
+            background: white;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        /* Results Container */
+        .results-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Menu Item Card */
+        .menu-item-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-item-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff7043;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-item-restaurant {
+            color: #ff9800;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn-container {
+            margin-top: auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .add-to-order-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .add-to-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .view-details-btn {
+            background: white;
+            border: 2px solid #ff9800;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: #ff9800;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .view-details-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            background: white;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #666;
+        }
+
+        .empty-state-message {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .search-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .search-subtitle {
+                font-size: 1rem;
+            }
+
+            .search-form {
+                margin: 0 1rem 2rem;
+            }
+
+            .search-input {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .search-btn {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .results-container {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 }
 
-<div class="container py-5" style="min-height: 100vh;">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="mb-4">
-                <form method="get" asp-action="Search">
-                    <input type="text" name="query" value="@Model.Query" class="form-control" style="
-                        border-radius: 20px;
-                        border: 1px solid #ff9800;
-                        padding: 10px 20px;
-                        font-size: 1rem;
-                        background-color: papayawhip;
-                    " placeholder="Search for restaurants or menu items...">
-                </form>
+<div class="search-hero">
+    <div class="container">
+        <h1 class="hero-title">Search Results</h1>
+        <p class="search-subtitle">Results for "@ViewBag.SearchQuery"</p>
+
+        <form asp-action="Search" method="get" class="search-form">
+            <input type="text" 
+                   name="query" 
+                   class="search-input" 
+                   placeholder="Search for menu items..." 
+                   value="@ViewBag.SearchQuery" 
+                   required>
+            <button type="submit" class="search-btn">
+                Search
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="results-container">
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <p class="empty-state-message">No menu items found matching your search.</p>
+                <a asp-action="Index" class="back-btn">
+                    Back to Home
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="results-grid">
+                @foreach (var item in Model)
+                {
+                    <div class="menu-item-card">
+                        <img src="@item.PhotoUrl" alt="@item.Name" class="menu-item-image">
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">@item.Name</h3>
+                            <div class="menu-item-price">@item.Price.ToString("F2") MKD</div>
+                            <div class="menu-item-meta">
+                                From <span class="menu-item-restaurant">@(item.Restaurant?.Name ?? "Unknown Restaurant")</span>
+                            </div>
+                            <div class="btn-container">
+                                <a asp-action="AddToOrder" 
+                                   asp-route-id="@item.MenuItemID" 
+                                   class="add-to-order-btn">
+                                    Add to Order
+                                </a>
+                                <a asp-action="MenuItemDetails" 
+                                   asp-route-id="@item.MenuItemID" 
+                                   class="view-details-btn">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
 
-            <h4 style="color: #ff9800; font-weight: 600;">Search Results for "@Model.Query"</h4>
-            
-            @if (!Model.Restaurants.Any() && !Model.MenuItems.Any())
-            {
-                <p>No results found.</p>
-            }
-            else
-            {
-                <!-- Display matching Restaurants -->
-                @if (Model.Restaurants.Any())
-                {
-                    <h5 style="color: #ff9800; font-weight: 600;">Restaurants</h5>
-                    <div class="row">
-                        @foreach (var restaurant in Model.Restaurants)
-                        {
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; border: none;">
-                                    <img src="@restaurant.PhotoUrl" class="card-img-top" alt="@restaurant.Name" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body text-center" style="background-color: papayawhip;">
-                                        <h5 class="card-title" style="font-weight: 600; color: #ff9800;">@restaurant.Name</h5>
-                                        <p class="card-text" style="color: #333;">@restaurant.Description</p>
-                                        <a asp-action="MenuItemsByRestaurant" asp-route-id="@restaurant.RestaurantID" class="btn btn-warning" style="
-                                            background-color: #ff9800;
-                                            border-color: #ff9800;
-                                            color: white;
-                                            font-weight: 500;
-                                        ">View Menu</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-
-                <!-- Display matching Menu Items -->
-                @if (Model.MenuItems.Any())
-                {
-                    <h5 style="color: #ff9800; font-weight: 600;">Menu Items</h5>
-                    <div class="row">
-                        @foreach (var menuItem in Model.MenuItems)
-                        {
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; border: none;">
-                                    @* If menu items have an image property, display it; adjust as needed *@
-                                    @if (!string.IsNullOrEmpty(menuItem.PhotoUrl))
-                                    {
-                                        <img src="@menuItem.PhotoUrl" class="card-img-top" alt="@menuItem.Name" style="height: 200px; object-fit: cover;">
-                                    }
-                                    <div class="card-body text-center" style="background-color: papayawhip;">
-                                        <h5 class="card-title" style="font-weight: 600; color: #ff9800;">@menuItem.Name</h5>
-                                        <p class="card-text" style="color: #333;">@menuItem.Description</p>
-                                        <p class="card-text" style="color: #ff9800; font-weight: 600;">@menuItem.Price.ToString("C")</p>
-                                        <a asp-action="MenuItemDetails" asp-route-id="@menuItem.MenuItemID" class="btn btn-warning" style="
-                                            background-color: #ff9800;
-                                            border-color: #ff9800;
-                                            color: white;
-                                            font-weight: 500;
-                                        ">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-            }
-        </div>
+            <div class="text-center mt-4">
+                <a asp-action="Index" class="back-btn">
+                    Back to Home
+                </a>
+            </div>
+        }
     </div>
 </div>

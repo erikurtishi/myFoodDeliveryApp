@@ -1,74 +1,238 @@
 @model List<FoodDeliveryWebAppFinal.Models.Order>
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 900px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <h2 style="color: #ff9800; font-weight: 600; text-align: center; margin-bottom: 1.5rem;">Your Order History</h2>
-        <table class="table table-striped" style="
-            border: 1px solid #ff9800;
-            border-radius: 8px;
+@section Styles {
+    <style>
+        /* Hero Section */
+        .history-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* History Card */
+        .history-card {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Table Styles */
+        .orders-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
             overflow: hidden;
-        ">
-            <thead style="background-color: #ff9800; color: white;">
-            <tr>
-                <th>Order ID</th>
-                <th>Status</th>
-                <th>Total Amount</th>
-                <th>Ordered At</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var order in Model)
-            {
-                <tr>
-                    <td>@order.OrderID</td>
-                    <td>@order.Status</td>
-                    <td>@order.TotalAmount.ToString("F2") MKD</td>
-                    <td>@order.CreatedAt.ToString("g")</td>
-                </tr>
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .orders-table thead {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+        }
+
+        .orders-table th {
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            padding: 1.2rem 1rem;
+            text-align: left;
+        }
+
+        .orders-table td {
+            padding: 1rem;
+            color: #666;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #eee;
+            background: white;
+            vertical-align: middle;
+        }
+
+        .orders-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .orders-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .orders-table tbody tr:hover {
+            background-color: #fff3e0;
+            transform: translateX(5px);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-cancelled {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        /* Amount and Date */
+        .amount {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: white;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #666;
+        }
+
+        .empty-state-message {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .history-hero {
+                padding: 3rem 0;
             }
-            </tbody>
-        </table>
-        <div class="auth-footer">
-            <a asp-action="Index" asp-controller="Home">Back to Home</a>
-        </div>
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .history-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .status-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+}
+
+<div class="history-hero">
+    <div class="container">
+        <h1 class="hero-title">Your Order History</h1>
     </div>
 </div>
 
-<style>
-    .auth-card {
-        background: papayawhip;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+<div class="container py-5">
+    <div class="d-flex justify-content-center">
+        <div class="history-card">
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <p class="empty-state-message">No orders found in your history.</p>
+                    <a asp-action="Index" class="back-btn">
+                        Start Ordering
+                    </a>
+                </div>
+            }
+            else
+            {
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Status</th>
+                            <th>Total Amount</th>
+                            <th>Ordered At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>#@order.OrderID</td>
+                                <td>
+                                    <span class="status-badge status-@order.Status.ToLower()">
+                                        @order.Status
+                                    </span>
+                                </td>
+                                <td class="amount">@order.TotalAmount.ToString("F2") MKD</td>
+                                <td class="date">@order.CreatedAt.ToString("MMM dd, yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
-    .auth-card h2 {
-        color: #ff9800;
-        font-weight: 600;
-    }
-
-    table th, table td {
-        vertical-align: middle;
-    }
-    .auth-footer {
-        text-align: center;
-        margin-top: 1rem;
-    }
-
-    .auth-footer a {
-        color: #ff9800;
-        font-weight: 500;
-        text-decoration: none;
-    }
-
-    .auth-footer a:hover {
-        text-decoration: underline;
-    }
-</style>
+                <div class="text-center">
+                    <a asp-action="Index" class="back-btn">
+                        Back to Home
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,54 +1,239 @@
 @model FoodDeliveryWebAppFinal.Models.MenuItem
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 600px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <div class="text-center">
-            <img src="@Model.PhotoUrl" alt="@Model.Name" class="img-fluid rounded mb-3" style="max-width: 100%; height: auto; border-radius: 15px;">
-            <h2 style="color: #ff9800; font-weight: 600;">@Model.Name</h2>
-            <p style="color: #333;">Price: @Model.Price.ToString("F2") MKD</p>
-            <p style="color: #777;">Category: @Model.Category?.Name</p>
-            <p style="color: #777;">Restaurant: @Model.Restaurant?.Name</p>
-            <p style="color: #555; margin-top: 15px;">@Model.Description</p>
-        </div>
-        <div class="text-center mt-4">
-            <form asp-action="AddToOrder" method="post" style="display: inline;">
-                <input type="hidden" name="menuItemId" value="@Model.MenuItemID" />
-                <button type="submit" class="btn" style="
-                    background-color: #ff9800;
-                    color: white;
-                    font-weight: 500;
-                    padding: 8px 16px;
-                    border-radius: 5px;
-                ">Add to Order</button>
-            </form>
-            <a asp-action="Index" class="btn btn-outline-warning" style="
-                border-color: #ff9800;
-                color: #ff9800;
-                font-weight: 500;
-                padding: 8px 16px;
-                border-radius: 5px;
-            ">Back to Home</a>
-        </div>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .details-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Details Card */
+        .details-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .details-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .details-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .details-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ff7043;
+            margin-bottom: 1rem;
+        }
+
+        .details-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .meta-value {
+            color: #ff9800;
+        }
+
+        .details-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 1.5rem 0;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .add-to-order-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .add-to-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            background: white;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .details-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .details-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .details-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .details-image {
+                height: 250px;
+            }
+
+            .details-name {
+                font-size: 1.75rem;
+            }
+
+            .details-price {
+                font-size: 1.25rem;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+}
+
+<div class="details-hero">
+    <div class="container">
+        <h1 class="hero-title">Menu Item Details</h1>
     </div>
 </div>
 
-<style>
-    .auth-card {
-        background: papayawhip;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+<div class="container py-5">
+    <div class="d-flex justify-content-center">
+        <div class="details-card">
+            <div class="details-content">
+                <img src="@Model.PhotoUrl" alt="@Model.Name" class="details-image">
+                
+                <div class="details-info">
+                    <h2 class="details-name">@Model.Name</h2>
+                    <div class="details-price">@Model.Price.ToString("F2") DEN</div>
+                    
+                    <div class="details-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Category:</span>
+                            <span class="meta-value">@(Model.Category?.Name ?? "Uncategorized")</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Restaurant:</span>
+                            <span class="meta-value">@(Model.Restaurant?.Name ?? "Unknown Restaurant")</span>
+                        </div>
+                    </div>
 
-    .auth-card h2 {
-        color: #ff9800;
-        font-weight: 600;
-    }
-</style>
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="details-description">
+                            @Model.Description
+                        </div>
+                    }
+
+                    <div class="btn-container">
+                        <a asp-action="AddToOrder" 
+                           asp-route-id="@Model.MenuItemID" 
+                           class="add-to-order-btn">
+                            Add to Order
+                        </a>
+                        <a asp-action="Index" 
+                           class="back-btn">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

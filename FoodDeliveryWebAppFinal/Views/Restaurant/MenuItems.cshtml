@@ -4,120 +4,285 @@
     ViewData["Title"] = "Menu Items";
 }
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 900px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 style="color: #ff9800; font-weight: 600;">Menu Items</h2>
-            <a asp-action="CreateMenuItem" class="btn btn-sm" style="
-                background-color: #ff9800;
-                color: white;
-                padding: 8px 16px;
-                font-weight: 500;
-                border-radius: 5px;
-            ">Create Menu Item</a>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .restaurant-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Menu Card */
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Action Buttons */
+        .create-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Table Styles */
+        .menu-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .menu-table thead {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            color: white;
+        }
+
+        .menu-table th {
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .menu-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            background: white;
+            vertical-align: middle;
+        }
+
+        .menu-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Table Action Buttons */
+        .edit-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-right: 0.5rem;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Empty State */
+        .empty-message {
+            text-align: center;
+            color: #ff9800;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 2rem 0;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            background: white;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .restaurant-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .menu-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .menu-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .action-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .edit-btn, .delete-btn {
+                width: 100%;
+                justify-content: center;
+                margin: 0;
+            }
+        }
+    </style>
+}
+
+<div class="restaurant-hero">
+    <div class="container">
+        <h1 class="hero-title">Menu Items</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="menu-card">
+        <div class="card-header">
+            <h2 class="section-title">Manage Menu</h2>
+            <a asp-action="CreateMenuItem" class="create-btn">
+                <i class="fas fa-plus"></i> Create Menu Item
+            </a>
         </div>
 
         @if (Model == null || !Model.Any())
         {
-            <p style="color: #ff9800; text-align: center; font-weight: 500;">No menu items found. Please create one.</p>
+            <div class="empty-message">
+                No menu items found. Please create one.
+            </div>
         }
         else
         {
-            <table class="table table-striped" style="
-                border: 1px solid #ff9800;
-                border-radius: 8px;
-                overflow: hidden;
-            ">
-                <thead style="background-color: #ff9800; color: white;">
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Available</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Price.ToString("F2") MKD</td>
-                        <td>@item.Category?.Name</td>
-                        <td>@(item.IsAvailable ? "Yes" : "No")</td>
-                        <td>
-                            <a asp-action="EditMenuItem" asp-route-id="@item.MenuItemID" class="btn btn-sm" style="
-                                    background-color: #ff9800;
-                                    color: white;
-                                    padding: 5px 10px;
-                                    font-weight: 500;
-                                    border-radius: 5px;
-                                    margin-right: 5px;
-                                ">Edit</a>
-                            <form asp-action="DeleteMenuItem" method="post" style="display: inline;">
-                                <input type="hidden" name="id" value="@item.MenuItemID" />
-                                <button type="submit" class="btn btn-sm" style="
-                                        background-color: #dc3545;
-                                        color: white;
-                                        padding: 5px 10px;
-                                        font-weight: 500;
-                                        border-radius: 5px;
-                                        border: none;
-                                    ">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="menu-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Available</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Price.ToString("F2") MKD</td>
+                                <td>@item.Category?.Name</td>
+                                <td>@(item.IsAvailable ? "Yes" : "No")</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a asp-action="EditMenuItem" asp-route-id="@item.MenuItemID" class="edit-btn">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <form asp-action="DeleteMenuItem" method="post" style="display: inline;">
+                                            <input type="hidden" name="id" value="@item.MenuItemID" />
+                                            <button type="submit" class="delete-btn">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
-        <div class="auth-footer">
-            <a asp-action="Index" asp-controller="Restaurant">Back to Home</a>
+
+        <div class="text-center">
+            <a asp-action="Index" asp-controller="Restaurant" class="back-btn">
+                Back to Dashboard
+            </a>
         </div>
     </div>
-    
 </div>
-
-<style>
-    .auth-card {
-        background: papayawhip;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .auth-card h2 {
-        color: #ff9800;
-        font-weight: 600;
-    }
-
-    table th, table td {
-        vertical-align: middle;
-    }
-
-    .btn-sm {
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
-    .auth-footer {
-        text-align: center;
-        margin-top: 1rem;
-    }
-
-    .auth-footer a {
-        color: #ff9800;
-        font-weight: 500;
-        text-decoration: none;
-    }
-
-    .auth-footer a:hover {
-        text-decoration: underline;
-    }
-</style>
