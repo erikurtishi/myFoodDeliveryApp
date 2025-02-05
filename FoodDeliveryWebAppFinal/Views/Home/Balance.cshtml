@@ -1,54 +1,223 @@
 @model FoodDeliveryWebAppFinal.Models.AppUser
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 600px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <h2 style="color: #ff9800; font-weight: 600; text-align: center;">Your Balance</h2>
-        <p style="color: #333; text-align: center; font-size: 1.2rem;">Current Balance: @Model.Balance.ToString("F2") MKD</p>
-
-        <form asp-action="Deposit" method="post" class="mt-4">
-            <div class="form-group">
-                <label for="amount" style="color: #ff9800; font-weight: 500;">Deposit Amount</label>
-                <input type="number" name="amount" class="form-control" style="
-                    border: 1px solid #ff9800;
-                    border-radius: 8px;
-                " step="0.01" min="0.01" placeholder="Enter amount..." required />
-            </div>
-            <button type="submit" class="btn mt-3" style="
-                background-color: #ff9800;
-                color: white;
-                font-weight: 500;
-                padding: 10px 20px;
-                border-radius: 8px;
-            ">Deposit</button>
-        </form>
-
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success mt-4">
-                @TempData["Success"]
-            </div>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .balance-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
         }
 
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger mt-4">
-                @TempData["Error"]
-            </div>
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-warning" style="
-                border-color: #ff9800;
-                color: #ff9800;
-                font-weight: 500;
-                padding: 8px 16px;
-                border-radius: 5px;
-            ">Back to Home</a>
+        /* Balance Card */
+        .balance-card {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .balance-amount {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .amount-label {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .amount-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .currency {
+            font-size: 1.2rem;
+            color: #666;
+            margin-left: 0.5rem;
+        }
+
+        /* Form Controls */
+        .deposit-form {
+            margin-bottom: 2rem;
+        }
+
+        .deposit-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid #ff9800;
+            background-color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .deposit-input:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+            transform: translateY(-2px);
+            border-color: #ff7043;
+        }
+
+        .deposit-input::placeholder {
+            color: #999;
+        }
+
+        .deposit-btn {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .deposit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .back-btn {
+            background: white;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .back-btn:hover {
+            background: #fff3e0;
+            color: #ff7043;
+            text-decoration: none;
+        }
+
+        .notification {
+            background: linear-gradient(45deg, #ff9800, #ff7043);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #ef5350, #f44336);
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .balance-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .balance-card {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .amount-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+}
+
+<div class="balance-hero">
+    <div class="container">
+        <h1 class="hero-title">Your Balance</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-center">
+        <div class="balance-card">
+            <div class="balance-amount">
+                <div class="amount-label">Current Balance</div>
+                <div class="amount-value">
+                    @Model.Balance.ToString("F2")<span class="currency">DEN</span>
+                </div>
+            </div>
+
+            <form asp-action="Deposit" method="post" class="deposit-form">
+                <input type="number" 
+                       name="amount" 
+                       class="deposit-input" 
+                       step="0.01" 
+                       min="0.01" 
+                       placeholder="Enter deposit amount..." 
+                       required />
+                
+                <button type="submit" class="deposit-btn">
+                    Deposit
+                </button>
+            </form>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="notification">
+                    @TempData["Success"]
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="notification error">
+                    @TempData["Error"]
+                </div>
+            }
+
+            <a asp-controller="Home" asp-action="Index" class="back-btn">
+                Back to Home
+            </a>
+        </div>
     </div>
 </div>

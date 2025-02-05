@@ -1,79 +1,237 @@
 @model IEnumerable<FoodDeliveryWebAppFinal.Models.Order>
 
 @{
-ViewData["Title"] = "Driver Dashboard";
+    ViewData["Title"] = "Driver Dashboard";
 }
 
-<div class="container py-4 d-flex justify-content-center align-items-center" style="background-color: #fff6e9;">
-    <div class="auth-card" style="
-        background: papayawhip;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 900px;
-        padding: 2rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    ">
-        <h2 style="color: #ff9800; font-weight: 600; text-align: center;">Driver Dashboard</h2>
+@section Styles {
+    <style>
+        /* Hero Section */
+        .driver-hero {
+            background: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+            padding: 4rem 0;
+            margin-bottom: -3rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Driver Card */
+        .driver-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        /* Order Card */
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.15);
+        }
+
+        .order-title {
+            color: #ff9800;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .order-info {
+            margin-bottom: 1rem;
+        }
+
+        .order-info strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .order-items {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .order-items h6 {
+            color: #ff9800;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-items ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-items li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-items li:last-child {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .status-delivering {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-delivered {
+            background: #eeeeee;
+            color: #757575;
+        }
+
+        /* Buttons */
+        .deliver-btn {
+            background: linear-gradient(45deg, #4caf50, #43a047);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .deliver-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #ff9800;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .driver-hero {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .driver-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .order-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+}
+
+<div class="driver-hero">
+    <div class="container">
+        <h1 class="hero-title">Driver Dashboard</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="driver-card">
         @if (!Model.Any())
         {
-        <p style="color: #ff9800; text-align: center; font-weight: 500;">No orders assigned to you at the moment.</p>
+            <div class="empty-message">
+                No orders assigned to you at the moment.
+            </div>
         }
         else
         {
-        <div class="row">
-            @foreach (var order in Model)
-            {
-            <div class="col-md-6 mb-4">
-                <div class="card p-3" style="
-                            background-color: #fff6e9;
-                            border-radius: 8px;
-                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-                        ">
-                    <div class="card-body">
-                        <h5 class="card-title" style="color: #ff9800; font-weight: 600;">Order #@order.OrderID</h5>
-                        <p class="card-text">
-                            <strong>Customer:</strong> @(order.User?.FullName ?? "N/A") <br>
-                            <strong>Address:</strong> @(order.User?.Address ?? "N/A") <br>
-                            <strong>Phone:</strong> @(order.User?.PhoneNumber ?? "N/A") <br>
-                            <strong>Status:</strong> <span style="color: @(order.Status == "Out for Delivery" ? "green" : "red"); font-weight: bold;">@order.Status</span> <br>
-                            <strong>Total:</strong> @order.TotalAmount.ToString("F2") MKD<br>
-                            <strong>Created:</strong> @order.CreatedAt.ToString("g") <br>
-                        </p>
+            <div class="row">
+                @foreach (var order in Model)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="order-card">
+                            <h5 class="order-title">Order #@order.OrderID</h5>
+                            <div class="order-info">
+                                <p><strong>Customer:</strong> @(order.User?.FullName ?? "N/A")</p>
+                                <p><strong>Address:</strong> @(order.User?.Address ?? "N/A")</p>
+                                <p><strong>Phone:</strong> @(order.User?.PhoneNumber ?? "N/A")</p>
+                                <p>
+                                    <strong>Status:</strong>
+                                    <span class="status-badge @(order.Status == "Out for Delivery" ? "status-delivering" : "status-delivered")">
+                                        @order.Status
+                                    </span>
+                                </p>
+                                <p><strong>Total:</strong> @order.TotalAmount.ToString("F2") DEN</p>
+                                <p><strong>Created:</strong> @order.CreatedAt.ToString("g")</p>
+                            </div>
 
-                        <div>
-                            <h6 style="color: #ff9800;">Order Items:</h6>
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                            <ul>
-                                @foreach (var item in order.OrderItems)
+                            <div class="order-items">
+                                <h6>Order Items:</h6>
+                                @if (order.OrderItems != null && order.OrderItems.Any())
                                 {
-                                <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("F2") MKD</li>
+                                    <ul>
+                                        @foreach (var item in order.OrderItems)
+                                        {
+                                            <li>@item.MenuItem?.Name x @item.Quantity - @item.SubTotal.ToString("F2") DEN</li>
+                                        }
+                                    </ul>
                                 }
-                            </ul>
+                                else
+                                {
+                                    <p class="text-muted">No items in this order.</p>
+                                }
+                            </div>
+
+                            @if (order.Status == "Out for Delivery")
+                            {
+                                <form asp-action="MarkDelivered" method="post">
+                                    <input type="hidden" name="orderId" value="@order.OrderID" />
+                                    <button type="submit" class="deliver-btn">
+                                        Mark as Delivered
+                                    </button>
+                                </form>
                             }
                             else
                             {
-                            <p style="color: gray;">No items in this order.</p>
+                                <p class="text-center text-muted mt-3">Delivered</p>
                             }
                         </div>
-
-                        @if (order.Status == "Out for Delivery")
-                        {
-                        <form asp-action="MarkDelivered" method="post" class="mt-2">
-                            <input type="hidden" name="orderId" value="@order.OrderID" />
-                            <button type="submit" class="btn btn-success w-100">Mark Delivered</button>
-                        </form>
-                        }
-                        else
-                        {
-                        <p style="color: gray; text-align: center;">Delivered</p>
-                        }
                     </div>
-                </div>
+                }
             </div>
-            }
-        </div>
         }
     </div>
 </div>
